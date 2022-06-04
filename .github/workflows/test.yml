@@ -1,0 +1,56 @@
+name: test
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        go: [1.18]
+        os: [ubuntu-20.04, ubuntu-22.04]
+
+    name: all
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: actions/setup-go@v2
+      with:
+        go-version: ${{ matrix.go }}
+
+    - uses: actions/cache@v2
+      id: cache-go-sum
+      with:
+        path: ~/go/pkg/mod
+        key: ${{ runner.os }}-${{ matrix.go }}-go-${{ hashFiles('**/go.sum') }}
+        restore-keys: |
+          ${{ runner.os }}-${{ matrix.go }}-go-
+
+    - name: download dependencies
+      if: steps.cache-go-sum.outputs.cache-hit != 'true'
+      run: go mod tidy
+
+    # disabled because go 1.18 generics doesnt support some linters.
+    # - name: lint
+    #   run: make lint
+
+    - name: test
+      run: go test -race -v -coverprofile coverage.out -covermode atomic ./...
+
+    - name: Convert coverage to lcov
+      uses: jandelgado/gcov2lcov-action@v1.0.0
+      with:
+        infile: coverage.out
+        outfile: coverage.lcov
+      if: "matrix.os == 'ubuntu-22.04' && matrix.go == 1.18"
+
+    - name: Coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.github_token }}
+        path-to-lcov: coverage.lcov
+      if: "matrix.os == 'ubuntu-22.04' && matrix.go == 1.18"

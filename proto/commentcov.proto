@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package="github.com/terakoya76/commentcov/proto";
+
+message MeasureCoverageIn {
+    repeated string files = 1;
+}
+
+message Block {
+    uint32 start_line = 1;
+    uint32 start_column = 2;
+    uint32 end_line = 3;
+    uint32 end_column = 4;
+}
+
+message Comment {
+    Block block = 1;
+    string comment = 2;
+}
+
+message CoverageItem {
+    enum Scope {
+        UNKNONW = 0;
+        FILE = 1;
+        PUBLIC_MODULE = 2;
+        PRIVATE_MODULE = 3;
+        PUBLIC_CLASS = 4;
+        PRIVATE_CLASS = 5;
+        PUBLIC_TYPE = 6;
+        PRIVATE_TYPE = 7;
+        PUBLIC_FUNCTION = 8;
+        PRIVATE_FUNCTION = 9;
+        PUBLIC_VARIABLE = 10;
+        PRIVATE_VARIABLE = 11;
+    }
+
+    Scope scope = 1;
+    Block target_block = 2;
+    string file = 3;
+    string identifier = 4;
+    string extension = 5;
+    repeated Comment header_comments = 6;
+    repeated Comment inline_comments = 7;
+}
+
+message MeasureCoverageOut {
+    repeated CoverageItem coverage_items = 1;
+}
+
+service CommentcovPlugin {
+    rpc MeasureCoverage(MeasureCoverageIn) returns (MeasureCoverageOut);
+}

@@ -1,0 +1,67 @@
+package pluggable
+
+import (
+	"fmt"
+	"sync"
+
+	"github.com/hashicorp/go-hclog"
+	"github.com/hashicorp/go-plugin"
+
+	"github.com/terakoya76/commentcov/pkg/common"
+	"github.com/terakoya76/commentcov/proto"
+)
+
+var (
+	// PluginHandshakeConfig holds configuration for plugin.GRPCPlugin.
+	PluginHandshakeConfig = plugin.HandshakeConfig{
+		MagicCookieKey:   "BASIC_PLUGIN",
+		MagicCookieValue: "Hello",
+	}
+)
+
+// GetPluginFromClient returns Pluggable object.
+func GetPluginFromClient(client *plugin.Client, pluginName string) (Pluggable, error) {
+	grpcClient, err := client.Client()
+	if err != nil {
+		return nil, fmt.Errorf("%w", err)
+	}
+
+	raw, err := grpcClient.Dispense(pluginName)
+	if err != nil {
+		return nil, fmt.Errorf("%w", err)
+	}
+
+	p := raw.(Pluggable)
+	return p, nil
+}
+
+// Consume aggregates CoverageItems from multi publishers.
+func Consume(logger hclog.Logger, queue <-chan common.Pair[[]*proto.CoverageItem, error]) ([]*proto.CoverageItem, error) {
+	items := make([]*proto.CoverageItem, 0)
+
+	var err error
+	for pair := range queue {
+		if pair.V2 != nil {
+			err = pair.V2
+		}
+
+		items = append(items, pair.V1...)
+	}
+
+	if err != nil {
+		return []*proto.CoverageItem{}, fmt.Errorf("%w", err)
+	}
+
+	return items, nil
+}
+
+// Publish receive a list of target files and call the plugin MeasureCoverage logic.
+func Publish(wg *sync.WaitGroup, logger hclog.Logger, p Pluggable, filenames []string, queue chan<- common.Pair[[]*proto.CoverageItem, error]) {
+	defer wg.Done()
+
+	cis, err := p.MeasureCoverage(filenames)
+	queue <- common.Pair[[]*proto.CoverageItem, error]{
+		V1: cis,
+		V2: err,
+	}
+}
