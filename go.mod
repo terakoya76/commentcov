@@ -3,7 +3,7 @@ module github.com/terakoya76/commentcov
 go 1.18
 
 require (
-	github.com/google/go-cmp v0.5.7
+	github.com/google/go-cmp v0.5.8
 	github.com/hashicorp/go-hclog v1.2.0
 	github.com/hashicorp/go-plugin v1.4.4
 	github.com/mattn/go-zglob v0.0.3
