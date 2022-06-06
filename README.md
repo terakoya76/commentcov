@@ -11,7 +11,7 @@ plugins:
     install_command: go install github.com/terakoya76/commentcov-plugin-go@latest
     execute_command: commentcov-plugin-go
 target_path: .
-exclude_pathes:
+exclude_paths:
   - ./vendor/**/**
 mode: file_scope
 ```

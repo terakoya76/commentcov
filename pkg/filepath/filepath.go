@@ -25,7 +25,7 @@ func (s *Fileset) Extensions() []string {
 	return exts
 }
 
-// Files returns a list of filepathes of the coverage target files.
+// Files returns a list of filepaths of the coverage target files.
 func (s *Fileset) Files(ext string) []string {
 	fs := []string{}
 
@@ -38,10 +38,10 @@ func (s *Fileset) Files(ext string) []string {
 	return fs
 }
 
-// Extract returns a Fileset from the given targetPath and excludePathes.
-func Extract(targetPath string, excludePathes []string) (*Fileset, error) {
+// Extract returns a Fileset from the given targetPath and excludePaths.
+func Extract(targetPath string, excludePaths []string) (*Fileset, error) {
 	excluded := make(map[string]struct{})
-	for _, ep := range excludePathes {
+	for _, ep := range excludePaths {
 		matches, err := zglob.Glob(ep)
 		if err != nil {
 			return nil, fmt.Errorf("failed to zglob.Glob: %w", err)
