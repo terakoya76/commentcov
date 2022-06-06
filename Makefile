@@ -9,4 +9,7 @@ test:
 	go test -race -v ./...
 
 proto-generate:
-	protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative proto/commentcov.proto
+	protoc \
+		--go_out=./proto --go_opt=paths=import --go_opt=module=github.com/terakoya76/commentcov/proto --go_opt=Mcommentcov-proto/commentcov.proto=github.com/terakoya76/commentcov/proto \
+		--go-grpc_out=./proto --go-grpc_opt=paths=import --go-grpc_opt=module=github.com/terakoya76/commentcov/proto --go-grpc_opt=Mcommentcov-proto/commentcov.proto=github.com/terakoya76/commentcov/proto \
+		commentcov-proto/commentcov.proto
