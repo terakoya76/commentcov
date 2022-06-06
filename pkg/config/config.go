@@ -1,7 +1,7 @@
 package config
 
 import (
-	"github.com/terakoya76/commentcov/pkg/pluggable"
+	"github.com/commentcov/commentcov/pkg/pluggable"
 )
 
 // ViperConfig is unmarshaled from viper.Config.

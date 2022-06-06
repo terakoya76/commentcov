@@ -7,8 +7,8 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	"github.com/terakoya76/commentcov/pkg/common"
-	"github.com/terakoya76/commentcov/pkg/config"
+	"github.com/commentcov/commentcov/pkg/common"
+	"github.com/commentcov/commentcov/pkg/config"
 )
 
 var (

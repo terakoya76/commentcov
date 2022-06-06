@@ -7,8 +7,8 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 
-	"github.com/terakoya76/commentcov/pkg/common"
-	"github.com/terakoya76/commentcov/pkg/pluggable"
+	"github.com/commentcov/commentcov/pkg/common"
+	"github.com/commentcov/commentcov/pkg/pluggable"
 )
 
 func TestBatched(t *testing.T) {

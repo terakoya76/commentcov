@@ -10,6 +10,6 @@ test:
 
 proto-generate:
 	protoc \
-		--go_out=./proto --go_opt=paths=import --go_opt=module=github.com/terakoya76/commentcov/proto --go_opt=Mcommentcov-proto/commentcov.proto=github.com/terakoya76/commentcov/proto \
-		--go-grpc_out=./proto --go-grpc_opt=paths=import --go-grpc_opt=module=github.com/terakoya76/commentcov/proto --go-grpc_opt=Mcommentcov-proto/commentcov.proto=github.com/terakoya76/commentcov/proto \
+		--go_out=./proto --go_opt=paths=import --go_opt=module=github.com/commentcov/commentcov/proto --go_opt=Mcommentcov-proto/commentcov.proto=github.com/commentcov/commentcov/proto \
+		--go-grpc_out=./proto --go-grpc_opt=paths=import --go-grpc_opt=module=github.com/commentcov/commentcov/proto --go-grpc_opt=Mcommentcov-proto/commentcov.proto=github.com/commentcov/commentcov/proto \
 		commentcov-proto/commentcov.proto

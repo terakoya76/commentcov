@@ -5,7 +5,7 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 
-	"github.com/terakoya76/commentcov/pkg/report"
+	"github.com/commentcov/commentcov/pkg/report"
 )
 
 func TestStringToMode(t *testing.T) {
