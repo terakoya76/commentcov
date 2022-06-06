@@ -1,11 +1,20 @@
 package filepath_test
 
 import (
+	"sort"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
 
 	"github.com/terakoya76/commentcov/pkg/filepath"
+)
+
+var (
+	sortedSliceTrans = cmp.Transformer("Sort", func(in []string) []string {
+		out := append([]string(nil), in...) // Copy input to avoid mutating it
+		sort.Strings(out)
+		return out
+	})
 )
 
 func TestExtensions(t *testing.T) {
@@ -47,7 +56,7 @@ func TestExtensions(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			got := tt.fileset.Extensions()
-			if diff := cmp.Diff(tt.want, got); diff != "" {
+			if diff := cmp.Diff(tt.want, got, sortedSliceTrans); diff != "" {
 				t.Errorf("[]string values are mismatch (-want +got):%s\n", diff)
 			}
 		})
@@ -96,7 +105,7 @@ func TestFiles(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			got := tt.fileset.Files(tt.extension)
-			if diff := cmp.Diff(tt.want, got); diff != "" {
+			if diff := cmp.Diff(tt.want, got, sortedSliceTrans); diff != "" {
 				t.Errorf("[]string values are mismatch (-want +got):%s\n", diff)
 			}
 		})
