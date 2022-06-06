@@ -3,7 +3,7 @@ package report
 import (
 	"fmt"
 
-	"github.com/terakoya76/commentcov/proto"
+	"github.com/commentcov/commentcov/proto"
 )
 
 // Mode controls at what granularity coverage reporting is performed.

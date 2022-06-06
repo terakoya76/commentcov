@@ -7,7 +7,7 @@ import (
 	"github.com/hashicorp/go-plugin"
 	"google.golang.org/grpc"
 
-	"github.com/terakoya76/commentcov/proto"
+	"github.com/commentcov/commentcov/proto"
 )
 
 // Pluggable is the interface.

@@ -1,4 +1,4 @@
-module github.com/terakoya76/commentcov
+module github.com/commentcov/commentcov
 
 go 1.18
 

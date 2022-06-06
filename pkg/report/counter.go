@@ -1,7 +1,7 @@
 package report
 
 import (
-	"github.com/terakoya76/commentcov/proto"
+	"github.com/commentcov/commentcov/proto"
 )
 
 // scopedCounter holds counters by scope.

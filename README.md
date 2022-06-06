@@ -8,7 +8,7 @@ Place `.commentcov.yaml`, then run commentcov
 $ cat .commentcov.yaml
 plugins:
   - extension: .go
-    install_command: go install github.com/terakoya76/commentcov-plugin-go@latest
+    install_command: go install github.com/commentcov/commentcov-plugin-go@latest
     execute_command: commentcov-plugin-go
 target_path: .
 exclude_paths:

@@ -6,7 +6,7 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 
-	"github.com/terakoya76/commentcov/pkg/filepath"
+	"github.com/commentcov/commentcov/pkg/filepath"
 )
 
 var (

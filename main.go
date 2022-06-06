@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/terakoya76/commentcov/cmd"
+	"github.com/commentcov/commentcov/cmd"
 )
 
 // main is entrypoint.

@@ -8,11 +8,11 @@ import (
 	"github.com/hashicorp/go-plugin"
 	"github.com/spf13/cobra"
 
-	"github.com/terakoya76/commentcov/pkg/common"
-	"github.com/terakoya76/commentcov/pkg/filepath"
-	"github.com/terakoya76/commentcov/pkg/pluggable"
-	"github.com/terakoya76/commentcov/pkg/report"
-	"github.com/terakoya76/commentcov/proto"
+	"github.com/commentcov/commentcov/pkg/common"
+	"github.com/commentcov/commentcov/pkg/filepath"
+	"github.com/commentcov/commentcov/pkg/pluggable"
+	"github.com/commentcov/commentcov/pkg/report"
+	"github.com/commentcov/commentcov/proto"
 )
 
 const (

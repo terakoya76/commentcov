@@ -6,7 +6,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/terakoya76/commentcov/pkg/common"
+	"github.com/commentcov/commentcov/pkg/common"
 )
 
 // versionCmd returns the version info.
