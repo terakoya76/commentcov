@@ -1,0 +1,3 @@
+[submodule "commentcov-proto"]
+	path = commentcov-proto
+	url = https://github.com/commentcov/commentcov-proto.git
