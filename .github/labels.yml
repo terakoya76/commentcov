@@ -7,6 +7,9 @@
 - name: bug
   description: Something isn't working
   color: d73a4a
+- name: dependencies
+  description: Pull requests that update a dependency file
+  color: 0052CC
 - name: documentation
   description: Improvements or additions to documentation
   color: 0075ca
