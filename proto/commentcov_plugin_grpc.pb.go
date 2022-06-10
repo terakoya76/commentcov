@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.12.4
-// source: commentcov-proto/commentcov.proto
+// source: commentcov-proto/commentcov_plugin.proto
 
 package proto
 
@@ -35,7 +35,7 @@ func NewCommentcovPluginClient(cc grpc.ClientConnInterface) CommentcovPluginClie
 
 func (c *commentcovPluginClient) MeasureCoverage(ctx context.Context, in *MeasureCoverageIn, opts ...grpc.CallOption) (*MeasureCoverageOut, error) {
 	out := new(MeasureCoverageOut)
-	err := c.cc.Invoke(ctx, "/commentcov.proto.CommentcovPlugin/MeasureCoverage", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/commentcov.plugin.CommentcovPlugin/MeasureCoverage", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -80,7 +80,7 @@ func _CommentcovPlugin_MeasureCoverage_Handler(srv interface{}, ctx context.Cont
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/commentcov.proto.CommentcovPlugin/MeasureCoverage",
+		FullMethod: "/commentcov.plugin.CommentcovPlugin/MeasureCoverage",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CommentcovPluginServer).MeasureCoverage(ctx, req.(*MeasureCoverageIn))
@@ -92,7 +92,7 @@ func _CommentcovPlugin_MeasureCoverage_Handler(srv interface{}, ctx context.Cont
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var CommentcovPlugin_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "commentcov.proto.CommentcovPlugin",
+	ServiceName: "commentcov.plugin.CommentcovPlugin",
 	HandlerType: (*CommentcovPluginServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -101,5 +101,5 @@ var CommentcovPlugin_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "commentcov-proto/commentcov.proto",
+	Metadata: "commentcov-proto/commentcov_plugin.proto",
 }
