@@ -33,7 +33,13 @@ var coverageCmd = &cobra.Command{
 			JSONFormat: true,
 		})
 
-		fileset, err := filepath.Extract(cfg.TargetPath, cfg.ExcludePaths)
+		excluded, err := filepath.NewExcludeFileSet(cfg.ExcludePaths)
+		if err != nil {
+			logger.Error(err.Error())
+			os.Exit(1)
+		}
+
+		fileset, err := filepath.Extract(cfg.TargetPath, excluded)
 		if err != nil {
 			logger.Error(err.Error())
 			os.Exit(1)
@@ -89,7 +95,7 @@ var coverageCmd = &cobra.Command{
 			close(queue)
 		}()
 
-		items, err := pluggable.Consume(logger, queue)
+		items, err := pluggable.Consume(logger, excluded, queue)
 		if err != nil {
 			logger.Error(err.Error())
 			os.Exit(1)

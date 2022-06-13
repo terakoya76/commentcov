@@ -38,8 +38,11 @@ func (s *Fileset) Files(ext string) []string {
 	return fs
 }
 
-// Extract returns a Fileset from the given targetPath and excludePaths.
-func Extract(targetPath string, excludePaths []string) (*Fileset, error) {
+// ExcludeFileSet represents a list of excluded files as Set.
+type ExcludeFileSet = map[string]struct{}
+
+// NewExcludeFileSet returns a excluded File Set from the given excludePaths.
+func NewExcludeFileSet(excludePaths []string) (ExcludeFileSet, error) {
 	excluded := make(map[string]struct{})
 	for _, ep := range excludePaths {
 		matches, err := zglob.Glob(ep)
@@ -48,10 +51,20 @@ func Extract(targetPath string, excludePaths []string) (*Fileset, error) {
 		}
 
 		for _, match := range matches {
-			excluded[match] = struct{}{}
+			path, err := filepath.Abs(match)
+			if err != nil {
+				return nil, fmt.Errorf("failed to filepath.Abs: %w", err)
+			}
+
+			excluded[path] = struct{}{}
 		}
 	}
 
+	return excluded, nil
+}
+
+// Extract returns a Fileset from the given targetPath and excludePaths.
+func Extract(targetPath string, excluded ExcludeFileSet) (*Fileset, error) {
 	set := &Fileset{
 		Set: make(map[string]map[string]struct{}),
 	}

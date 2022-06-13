@@ -8,6 +8,7 @@ import (
 	"github.com/hashicorp/go-plugin"
 
 	"github.com/commentcov/commentcov/pkg/common"
+	"github.com/commentcov/commentcov/pkg/filepath"
 	"github.com/commentcov/commentcov/proto"
 )
 
@@ -36,7 +37,7 @@ func GetPluginFromClient(client *plugin.Client, pluginName string) (Pluggable, e
 }
 
 // Consume aggregates CoverageItems from multi publishers.
-func Consume(logger hclog.Logger, queue <-chan common.Pair[[]*proto.CoverageItem, error]) ([]*proto.CoverageItem, error) {
+func Consume(logger hclog.Logger, excluded filepath.ExcludeFileSet, queue <-chan common.Pair[[]*proto.CoverageItem, error]) ([]*proto.CoverageItem, error) {
 	items := make([]*proto.CoverageItem, 0)
 
 	var err error
@@ -45,7 +46,13 @@ func Consume(logger hclog.Logger, queue <-chan common.Pair[[]*proto.CoverageItem
 			err = pair.V2
 		}
 
-		items = append(items, pair.V1...)
+		for _, ci := range pair.V1 {
+			if _, ok := excluded[ci.File]; ok {
+				continue
+			}
+
+			items = append(items, ci)
+		}
 	}
 
 	if err != nil {
