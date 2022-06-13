@@ -37,7 +37,7 @@ func GetPluginFromClient(client *plugin.Client, pluginName string) (Pluggable, e
 }
 
 // Consume aggregates CoverageItems from multi publishers.
-func Consume(logger hclog.Logger, excluded filepath.ExcludeFileSet, queue <-chan common.Pair[[]*proto.CoverageItem, error]) ([]*proto.CoverageItem, error) {
+func Consume(logger hclog.Logger, queue <-chan common.Pair[[]*proto.CoverageItem, error]) ([]*proto.CoverageItem, error) {
 	items := make([]*proto.CoverageItem, 0)
 
 	var err error
@@ -46,13 +46,7 @@ func Consume(logger hclog.Logger, excluded filepath.ExcludeFileSet, queue <-chan
 			err = pair.V2
 		}
 
-		for _, ci := range pair.V1 {
-			if _, ok := excluded[ci.File]; ok {
-				continue
-			}
-
-			items = append(items, ci)
-		}
+		items = append(items, pair.V1...)
 	}
 
 	if err != nil {
@@ -63,12 +57,23 @@ func Consume(logger hclog.Logger, excluded filepath.ExcludeFileSet, queue <-chan
 }
 
 // Publish receive a list of target files and call the plugin MeasureCoverage logic.
-func Publish(wg *sync.WaitGroup, logger hclog.Logger, p Pluggable, filenames []string, queue chan<- common.Pair[[]*proto.CoverageItem, error]) {
+func Publish(wg *sync.WaitGroup, logger hclog.Logger, p Pluggable, filenames []string, excluded filepath.ExcludeFileSet, queue chan<- common.Pair[[]*proto.CoverageItem, error]) {
 	defer wg.Done()
 
+	items := make([]*proto.CoverageItem, 0)
 	cis, err := p.MeasureCoverage(filenames)
+
+	// Double check against the exclusion list.
+	for _, ci := range cis {
+		if _, ok := excluded[ci.File]; ok {
+			continue
+		}
+
+		items = append(items, ci)
+	}
+
 	queue <- common.Pair[[]*proto.CoverageItem, error]{
-		V1: cis,
+		V1: items,
 		V2: err,
 	}
 }

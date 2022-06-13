@@ -86,7 +86,7 @@ var coverageCmd = &cobra.Command{
 			pWG.Add(len(batched))
 
 			for _, files := range batched {
-				go pluggable.Publish(pWG, logger, p, files, queue)
+				go pluggable.Publish(pWG, logger, p, files, excluded, queue)
 			}
 		}
 
@@ -95,7 +95,7 @@ var coverageCmd = &cobra.Command{
 			close(queue)
 		}()
 
-		items, err := pluggable.Consume(logger, excluded, queue)
+		items, err := pluggable.Consume(logger, queue)
 		if err != nil {
 			logger.Error(err.Error())
 			os.Exit(1)
