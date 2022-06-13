@@ -79,7 +79,10 @@ func Extract(targetPath string, excluded ExcludeFileSet) (*Fileset, error) {
 		}
 
 		ext := filepath.Ext(pathname)
-		f := filepath.Clean(pathname)
+		f, err := filepath.Abs(pathname)
+		if err != nil {
+			return fmt.Errorf("failed to filepath.Abs: %w", err)
+		}
 
 		if _, ok := excluded[f]; ok {
 			return nil
