@@ -72,7 +72,7 @@ func byFile(items []*proto.CoverageItem) {
 func byScope(items []*proto.CoverageItem) {
 	sc := make(scopedCounter)
 
-	unknownScope := proto.CoverageItem_UNKNONW.String()
+	unknownScope := proto.CoverageItem_UNKNOWN.String()
 	for _, item := range items {
 		scope := item.Scope.String()
 
@@ -97,7 +97,7 @@ func byScope(items []*proto.CoverageItem) {
 func byFileScope(items []*proto.CoverageItem) {
 	cc := make(map[string]scopedCounter)
 
-	unknownScope := proto.CoverageItem_UNKNONW.String()
+	unknownScope := proto.CoverageItem_UNKNOWN.String()
 	for _, item := range items {
 		scope := item.Scope.String()
 
