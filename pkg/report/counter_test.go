@@ -34,6 +34,41 @@ func TestNewCounter(t *testing.T) {
 	}
 }
 
+func TestMerge(t *testing.T) {
+	tests := []struct {
+		name    string
+		counter *report.Counter
+		other   *report.Counter
+		want    *report.Counter
+	}{
+
+		{
+			name: "standard",
+			counter: &report.Counter{
+				Covered: 5,
+				Total:   10,
+			},
+			other: &report.Counter{
+				Covered: 5,
+				Total:   10,
+			},
+			want: &report.Counter{
+				Covered: 10,
+				Total:   20,
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tt.counter.Merge(tt.other)
+			if diff := cmp.Diff(tt.want, tt.counter); diff != "" {
+				t.Errorf("*Counter values are mismatch (-want +got):%s\n", diff)
+			}
+		})
+	}
+}
+
 func TestCalcRate(t *testing.T) {
 	tests := []struct {
 		name    string
@@ -79,7 +114,7 @@ func TestCalcRate(t *testing.T) {
 	}
 }
 
-func TestProfile(t *testing.T) {
+func TestAdd(t *testing.T) {
 	tests := []struct {
 		name    string
 		counter *report.Counter
@@ -158,7 +193,7 @@ func TestProfile(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			tt.counter.Profile(tt.item)
+			tt.counter.Add(tt.item)
 			got := tt.counter
 			if diff := cmp.Diff(tt.want, got); diff != "" {
 				t.Errorf("*Counter values are mismatch (-want +got):%s\n", diff)

@@ -2,6 +2,7 @@ package report
 
 import (
 	"fmt"
+	"sort"
 
 	"github.com/commentcov/commentcov/proto"
 )
@@ -50,53 +51,69 @@ func Report(mode Mode, items []*proto.CoverageItem) {
 
 // byFile reports coverage per file.
 func byFile(items []*proto.CoverageItem) {
-	sc := make(scopedCounter)
+	cc, files, scopes := Profile(items)
 
-	for _, item := range items {
-		scope := item.File
+	sc := make(ScopedCounter)
+	for _, file := range files {
+		sc[file] = NewCounter()
 
-		if _, ok := sc[scope]; !ok {
-			sc[scope] = NewCounter()
+		for _, scope := range scopes {
+			if counter, ok := cc[file][scope]; ok {
+				sc[file].Merge(counter)
+			}
 		}
-
-		sc[scope].Profile(item)
 	}
 
-	for scope, counter := range sc {
-		percent := counter.CalcRate()
-		fmt.Printf("%v: %v\n", scope, percent)
+	for _, file := range files {
+		percent := sc[file].CalcRate()
+		fmt.Printf("%v: %v\n", file, percent)
 	}
 }
 
 // byScope reports coverage by node type.
 func byScope(items []*proto.CoverageItem) {
-	sc := make(scopedCounter)
+	cc, files, scopes := Profile(items)
 
-	unknownScope := proto.CoverageItem_UNKNOWN.String()
-	for _, item := range items {
-		scope := item.Scope.String()
-
-		if scope == unknownScope {
-			continue
-		}
-
-		if _, ok := sc[scope]; !ok {
-			sc[scope] = NewCounter()
-		}
-
-		sc[scope].Profile(item)
+	sc := make(ScopedCounter)
+	for _, scope := range scopes {
+		sc[scope] = NewCounter()
 	}
 
-	for scope, counter := range sc {
-		percent := counter.CalcRate()
+	for _, file := range files {
+		for _, scope := range scopes {
+			if counter, ok := cc[file][scope]; ok {
+				sc[scope].Merge(counter)
+			}
+		}
+	}
+
+	for _, scope := range scopes {
+		percent := sc[scope].CalcRate()
 		fmt.Printf("%v: %v\n", scope, percent)
 	}
 }
 
 // byFileScope reports coverage by node type per file.
 func byFileScope(items []*proto.CoverageItem) {
-	cc := make(map[string]scopedCounter)
+	cc, files, scopes := Profile(items)
 
+	for _, file := range files {
+		for _, scope := range scopes {
+			if counter, ok := cc[file][scope]; ok {
+				percent := counter.CalcRate()
+				fmt.Printf("%v,%v: %v\n", file, scope, percent)
+			}
+		}
+	}
+}
+
+// Profile converts a list of items into the map of filename:scope:couter.
+func Profile(items []*proto.CoverageItem) (map[string]ScopedCounter, []string, []string) {
+	cc := make(map[string]ScopedCounter)
+	files := []string{}
+	scopes := []string{}
+
+	scopeMemo := make(map[string]struct{})
 	unknownScope := proto.CoverageItem_UNKNOWN.String()
 	for _, item := range items {
 		scope := item.Scope.String()
@@ -105,21 +122,25 @@ func byFileScope(items []*proto.CoverageItem) {
 			continue
 		}
 
+		if _, ok := scopeMemo[scope]; !ok {
+			scopeMemo[scope] = struct{}{}
+			scopes = append(scopes, scope)
+		}
+
 		if _, ok := cc[item.File]; !ok {
-			cc[item.File] = make(scopedCounter)
+			cc[item.File] = make(ScopedCounter)
+			files = append(files, item.File)
 		}
 
 		if _, ok := cc[item.File][scope]; !ok {
 			cc[item.File][scope] = NewCounter()
 		}
 
-		cc[item.File][scope].Profile(item)
+		cc[item.File][scope].Add(item)
 	}
 
-	for file, sc := range cc {
-		for scope, counter := range sc {
-			percent := counter.CalcRate()
-			fmt.Printf("%v,%v: %v\n", file, scope, percent)
-		}
-	}
+	sort.Strings(files)
+	sort.Strings(scopes)
+
+	return cc, files, scopes
 }
