@@ -4,8 +4,8 @@ import (
 	"github.com/commentcov/commentcov/proto"
 )
 
-// scopedCounter holds counters by scope.
-type scopedCounter map[string]*Counter
+// ScopedCounter holds counters by scope.
+type ScopedCounter map[string]*Counter
 
 // Counter is a coverage conuter.
 type Counter struct {
@@ -21,6 +21,12 @@ func NewCounter() *Counter {
 	}
 }
 
+// Merge merges 2 counters into 1.
+func (c *Counter) Merge(other *Counter) {
+	c.Covered = c.Covered + other.Covered
+	c.Total = c.Total + other.Total
+}
+
 // CalcRate returns a rate from the current counter's state.
 func (c *Counter) CalcRate() float64 {
 	var t int
@@ -33,8 +39,8 @@ func (c *Counter) CalcRate() float64 {
 	return 100.0 * float64(c.Covered) / float64(t)
 }
 
-// Profile returns a rate from the current counter's state.
-func (c *Counter) Profile(item *proto.CoverageItem) {
+// Add adds the values of the given item.
+func (c *Counter) Add(item *proto.CoverageItem) {
 	if len(item.HeaderComments) > 0 {
 		c.Covered++
 		c.Total++
