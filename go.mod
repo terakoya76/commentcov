@@ -7,7 +7,7 @@ require (
 	github.com/hashicorp/go-hclog v1.2.1
 	github.com/hashicorp/go-plugin v1.4.4
 	github.com/mattn/go-zglob v0.0.3
-	github.com/spf13/cobra v1.4.0
+	github.com/spf13/cobra v1.5.0
 	github.com/spf13/viper v1.12.0
 	google.golang.org/grpc v1.47.0
 	google.golang.org/protobuf v1.28.0
