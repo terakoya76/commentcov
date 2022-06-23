@@ -66,7 +66,7 @@ func byFile(items []*proto.CoverageItem) {
 
 	for _, file := range files {
 		percent := sc[file].CalcRate()
-		fmt.Printf("%v: %v\n", file, percent)
+		fmt.Printf("%v,,%v\n", file, percent)
 	}
 }
 
@@ -89,7 +89,7 @@ func byScope(items []*proto.CoverageItem) {
 
 	for _, scope := range scopes {
 		percent := sc[scope].CalcRate()
-		fmt.Printf("%v: %v\n", scope, percent)
+		fmt.Printf(",%v,%v\n", scope, percent)
 	}
 }
 
@@ -101,7 +101,7 @@ func byFileScope(items []*proto.CoverageItem) {
 		for _, scope := range scopes {
 			if counter, ok := cc[file][scope]; ok {
 				percent := counter.CalcRate()
-				fmt.Printf("%v,%v: %v\n", file, scope, percent)
+				fmt.Printf("%v,%v,%v\n", file, scope, percent)
 			}
 		}
 	}
