@@ -14,6 +14,7 @@ plugins:
   - extension: .go
     install_command: go install github.com/commentcov/commentcov-plugin-go@latest
     execute_command: commentcov-plugin-go
+target_path: .
 exclude_paths:
   - "vendor/**/**"
 mode: scope
@@ -29,13 +30,13 @@ $ commentcov coverage
 {"@level":"debug","@message":"plugin address","@module":"commentcov.commentcov-plugin-go","@timestamp":"2022-06-04T09:49:59.641455+09:00","address":"/tmp/plugin3894134805","network":"unix","timestamp":"2022-06-04T09:49:59.641+0900"}
 {"@level":"debug","@message":"using plugin","@module":"commentcov","@timestamp":"2022-06-04T09:49:59.641511+09:00","version":1}
 {"@level":"trace","@message":"waiting for stdio data","@module":"commentcov.stdio","@timestamp":"2022-06-04T09:49:59.642178+09:00"}
-PUBLIC_TYPE: 86.67992047713717
-PRIVATE_FUNCTION: 26.929215170859933
-PUBLIC_FUNCTION: 46.19191641462744
-PUBLIC_CLASS: 86.1316662413881
-PUBLIC_VARIABLE: 69.15447974449488
-PRIVATE_TYPE: 36.721311475409834
-FILE: 8.397812854637367
-PRIVATE_CLASS: 38.396509408235616
-PRIVATE_VARIABLE: 14.998234463276836
+,PUBLIC_TYPE,86.67992047713717
+,PRIVATE_FUNCTION,26.929215170859933
+,PUBLIC_FUNCTION,46.19191641462744
+,PUBLIC_CLASS,86.1316662413881
+,PUBLIC_VARIABLE,69.15447974449488
+,PRIVATE_TYPE,36.721311475409834
+,FILE,8.397812854637367
+,PRIVATE_CLASS,38.396509408235616
+,PRIVATE_VARIABLE,14.998234463276836
 ```
