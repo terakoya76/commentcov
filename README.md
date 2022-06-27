@@ -20,7 +20,7 @@ exclude_paths:
 mode: scope
 ```
 
-Then, run commentcov. You could get the comment coverage of the `.go` files
+Then, run commentcov. You could get the comment coverage of the `.go` files in csv format.
 ```bash
 $ commentcov coverage
 {"@level":"info","@message":"Install Plugin","@module":"commentcov","@timestamp":"2022-06-04T09:49:57.276670+09:00","plugin":"commentcov-plugin-for-go"}
