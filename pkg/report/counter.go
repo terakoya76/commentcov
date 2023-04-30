@@ -23,8 +23,8 @@ func NewCounter() *Counter {
 
 // Merge merges 2 counters into 1.
 func (c *Counter) Merge(other *Counter) {
-	c.Covered = c.Covered + other.Covered
-	c.Total = c.Total + other.Total
+	c.Covered += other.Covered
+	c.Total += other.Total
 }
 
 // CalcRate returns a rate from the current counter's state.

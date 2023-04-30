@@ -67,6 +67,7 @@ func TestStringToMode(t *testing.T) {
 	}
 }
 
+//nolint:funlen
 func TestProfile(t *testing.T) {
 	tests := []struct {
 		name        string
