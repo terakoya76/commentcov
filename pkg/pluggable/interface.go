@@ -24,7 +24,7 @@ type CommentcovPlugin struct {
 }
 
 // GRPCServer is a part of plugin.GRPCPlugin interface.
-func (p *CommentcovPlugin) GRPCServer(broker *plugin.GRPCBroker, s *grpc.Server) error {
+func (p *CommentcovPlugin) GRPCServer(_ *plugin.GRPCBroker, s *grpc.Server) error {
 	proto.RegisterCommentcovPluginServer(
 		s,
 		&GRPCServer{
@@ -36,7 +36,7 @@ func (p *CommentcovPlugin) GRPCServer(broker *plugin.GRPCBroker, s *grpc.Server)
 }
 
 // GRPCClient is a part of plugin.GRPCPlugin interface.
-func (p *CommentcovPlugin) GRPCClient(ctx context.Context, broker *plugin.GRPCBroker, conn *grpc.ClientConn) (interface{}, error) {
+func (p *CommentcovPlugin) GRPCClient(_ context.Context, _ *plugin.GRPCBroker, conn *grpc.ClientConn) (interface{}, error) {
 	c := &GRPCClient{
 		client: proto.NewCommentcovPluginClient(conn),
 	}
@@ -52,7 +52,7 @@ type GRPCServer struct {
 }
 
 // MeasureCoverage calls the Pluggable implementation via gRPC.
-func (s *GRPCServer) MeasureCoverage(ctx context.Context, in *proto.MeasureCoverageIn) (*proto.MeasureCoverageOut, error) {
+func (s *GRPCServer) MeasureCoverage(_ context.Context, in *proto.MeasureCoverageIn) (*proto.MeasureCoverageOut, error) {
 	cis, err := s.Impl.MeasureCoverage(in.Files)
 	if err != nil {
 		out := &proto.MeasureCoverageOut{

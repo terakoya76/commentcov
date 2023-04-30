@@ -15,7 +15,7 @@ var (
 	// cfgPath is the flag variable representing config filepath.
 	cfgPath string
 	// cfg holds info from config.
-	cfg config.ViperConfig
+	cfg *config.ViperConfig
 )
 
 // rootCmd returns help cmd.
@@ -39,7 +39,7 @@ func Execute() {
 	}
 }
 
-// nolint: gochecknoinits
+//nolint:gochecknoinits
 func init() {
 	cobra.OnInitialize(initConfig)
 
@@ -79,12 +79,12 @@ func initConfig() {
 	}
 
 	// set default value
-	cfg = config.ViperConfig{
+	cfg = &config.ViperConfig{
 		TargetPath: ".",
 		Mode:       "file",
 	}
 
-	if err := viper.Unmarshal(&cfg); err != nil {
+	if err := viper.Unmarshal(cfg); err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "%v\n", err.Error())
 		os.Exit(1)
 	}

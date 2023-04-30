@@ -45,9 +45,11 @@ func (pc *PluginConfig) Install() error {
 func (pc *PluginConfig) GetInstallCommand() *exec.Cmd {
 	cmds := strings.Split(pc.InstallCommand, " ")
 	if len(cmds) == 1 {
+		//nolint:gosec
 		return exec.Command(pc.InstallCommand)
 	}
 
+	//nolint:gosec
 	return exec.Command(cmds[0], cmds[1:]...)
 }
 
@@ -55,8 +57,10 @@ func (pc *PluginConfig) GetInstallCommand() *exec.Cmd {
 func (pc *PluginConfig) GetExecuteCommand() *exec.Cmd {
 	cmds := strings.Split(pc.ExecuteCommand, " ")
 	if len(cmds) == 1 {
+		//nolint:gosec
 		return exec.Command(pc.ExecuteCommand)
 	}
 
+	//nolint:gosec
 	return exec.Command(cmds[0], cmds[1:]...)
 }

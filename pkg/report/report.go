@@ -44,6 +44,8 @@ func Report(mode Mode, items []*proto.CoverageItem) {
 		byScope(items)
 	case ModeFileScope:
 		byFileScope(items)
+	case ModeInvalid:
+		// do nothing
 	default:
 		// do nothing
 	}
@@ -108,6 +110,8 @@ func byFileScope(items []*proto.CoverageItem) {
 }
 
 // Profile converts a list of items into the map of filename:scope:couter.
+//
+//nolint:gocritic
 func Profile(items []*proto.CoverageItem) (map[string]ScopedCounter, []string, []string) {
 	cc := make(map[string]ScopedCounter)
 	files := []string{}

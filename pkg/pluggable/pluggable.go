@@ -37,7 +37,7 @@ func GetPluginFromClient(client *plugin.Client, pluginName string) (Pluggable, e
 }
 
 // Consume aggregates CoverageItems from multi publishers.
-func Consume(logger hclog.Logger, queue <-chan common.Pair[[]*proto.CoverageItem, error]) ([]*proto.CoverageItem, error) {
+func Consume(_ hclog.Logger, queue <-chan common.Pair[[]*proto.CoverageItem, error]) ([]*proto.CoverageItem, error) {
 	items := make([]*proto.CoverageItem, 0)
 
 	var err error
@@ -57,7 +57,14 @@ func Consume(logger hclog.Logger, queue <-chan common.Pair[[]*proto.CoverageItem
 }
 
 // Publish receive a list of target files and call the plugin MeasureCoverage logic.
-func Publish(wg *sync.WaitGroup, logger hclog.Logger, p Pluggable, filenames []string, excluded filepath.ExcludeFileSet, queue chan<- common.Pair[[]*proto.CoverageItem, error]) {
+func Publish(
+	wg *sync.WaitGroup,
+	_ hclog.Logger,
+	p Pluggable,
+	filenames []string,
+	excluded filepath.ExcludeFileSet,
+	queue chan<- common.Pair[[]*proto.CoverageItem, error],
+) {
 	defer wg.Done()
 
 	items := make([]*proto.CoverageItem, 0)
