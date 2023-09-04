@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/google/go-cmp v0.5.9
 	github.com/hashicorp/go-hclog v1.5.0
-	github.com/hashicorp/go-plugin v1.4.10
+	github.com/hashicorp/go-plugin v1.5.0
 	github.com/mattn/go-zglob v0.0.4
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/viper v1.16.0
@@ -20,7 +20,6 @@ require (
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/hashicorp/yamux v0.0.0-20211028200310-0bc27b27de87 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
-	github.com/jhump/protoreflect v1.6.1 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
