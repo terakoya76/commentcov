@@ -23,7 +23,7 @@ var rootCmd = &cobra.Command{
 	Use:   "",
 	Short: "",
 	Long:  "",
-	Run: func(cmd *cobra.Command, args []string) {
+	Run: func(cmd *cobra.Command, _ []string) {
 		if err := cmd.Help(); err != nil {
 			_, _ = fmt.Fprintf(os.Stderr, "%v\n", err.Error())
 			os.Exit(1)
