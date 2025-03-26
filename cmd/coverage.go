@@ -14,7 +14,7 @@ var coverageCmd = &cobra.Command{
 	Use:   "coverage",
 	Short: "generate coverage reports",
 	Long:  "generate coverage reports",
-	Run: func(cmd *cobra.Command, args []string) {
+	Run: func(_ *cobra.Command, _ []string) {
 		if err := execute.Run(cfg); err != nil {
 			_, _ = fmt.Fprintf(os.Stderr, "%v\n", err.Error())
 			os.Exit(1)

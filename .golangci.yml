@@ -1,4 +1,17 @@
 linters-settings:
+  depguard:
+    rules:
+      main:
+        allow:
+          - $gostd
+          - github.com/commentcov
+          - github.com/google
+          - github.com/hashicorp
+          - github.com/mattn/go-zglob
+          - github.com/spf13/viper
+          - github.com/spf13/cobra
+          - google.golang.org/grpc
+
   dupl:
     threshold: 100
 
@@ -34,7 +47,7 @@ linters-settings:
   goimports:
     local-prefixes: github.com/golangci/golangci-lint
 
-  gomnd:
+  mnd:
     settings:
       mnd:
         # don't include the "operation" and "assign" and "argument"
@@ -74,7 +87,6 @@ linters:
     - godot
     - godox
     - goimports
-    - gomnd
     - goprintffuncname
     - gosec
     - gosimple
@@ -82,6 +94,7 @@ linters:
     - ineffassign
     - lll
     - misspell
+    - mnd
     - nakedret
     - noctx
     - nolintlint
